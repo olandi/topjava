@@ -1,11 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="date" uri="LocalDateTimePrinter" %>
 <%--<%@ include file="colors.css" %>--%>
 <html>
 <head>
     <title>Meals</title>
-    <link href="colors.css" rel="stylesheet" type="text/css">
+    <link href="css/colors.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
@@ -27,9 +27,13 @@
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
             <td>${meal.exceed}</td>
+            <td><a href="meals?action=delete&id=${meal.id}">delete</a></td>
+            <td><a href="meals?action=update&id=${meal.id}">update</a></td>
+
         </tr>
     </c:forEach>
 </table>
+<a href="meals?action=create">add Meal</a>
 </body>
 </html>
 
