@@ -24,14 +24,9 @@ public class DateTimeUtil {
         return lt.compareTo(startDate) >= 0 && lt.compareTo(endDate) <= 0;
     }
 
-    public static boolean isBetweenDateTime(TemporalAccessor lt, TemporalAccessor start, TemporalAccessor end) {
-           //lt instanceof LocalDate
-        LocalDate l = LocalDate.from(lt);
-        LocalDate st = LocalDate.from(start);
-        LocalDate en = LocalDate.from(end);
+    public static<T extends Comparable<T>> boolean isBetweenDateTime(T lt, T start, T end) {
 
-        return l.compareTo(st) >= 0 && l.compareTo(en) <= 0;
-
+        return lt.compareTo(start) >= 0 && lt.compareTo(end) <= 0;
     }
 
     public static String toString(LocalDateTime ldt) {

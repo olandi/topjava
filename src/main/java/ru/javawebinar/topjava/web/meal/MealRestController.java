@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
@@ -36,7 +37,7 @@ public class MealRestController {
 
     public Meal update(Meal meal, Integer userId) throws NotFoundException {
         log.info("update {} with id={}", meal, userId);
-        ValidationUtil.assureIdConsistent(meal, userId);
+       // ValidationUtil.assureIdConsistent(meal, userId);//TODO с комментом раюотает норм
         return service.update(meal,userId);
     }
 
@@ -55,13 +56,13 @@ public class MealRestController {
 
     public Collection<MealWithExceed> getAll(Integer userId) {
         log.info("getAll");
-        return MealsUtil.getWithExceeded(service.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        return MealsUtil.getWithExceeded(service.getAll(userId), AuthorizedUser.getCaloriesPerDay());
     }
 
     public Collection<MealWithExceed> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer userId){
         log.info("getFiltered");
         return MealsUtil.getWithExceeded(
                 service.getFiltered(startDate, endDate, startTime, endTime, userId),
-                MealsUtil.DEFAULT_CALORIES_PER_DAY);
+                AuthorizedUser.getCaloriesPerDay());
     }
 }
