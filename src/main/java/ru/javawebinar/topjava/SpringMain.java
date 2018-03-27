@@ -23,17 +23,17 @@ public class SpringMain {
 
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
 
-            System.out.println("\n\n\n"+mealRestController.getAll(2));
+            System.out.println("\n\n\n"+mealRestController.getAll());
             System.out.println(mealRestController.create(
                     new Meal(LocalDateTime.of(2015, Month.AUGUST, 28, 20, 0), "Ужин", 555),2
             ));
-            System.out.println("\n\n\n"+mealRestController.getAll(2));
+            System.out.println("\n\n\n"+mealRestController.getAll());
 
             System.out.println(mealRestController.update(
                     new Meal(13,LocalDateTime.of(2015, Month.AUGUST, 28, 20, 0), "Ужин", 333),2
             ));
 
-            System.out.println("\n\n\n"+mealRestController.getAll(2));
+            System.out.println("\n\n\n"+mealRestController.getAll());
         }
     }
 }

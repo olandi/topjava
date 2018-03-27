@@ -29,6 +29,18 @@ public class DateTimeUtil {
         return lt.compareTo(start) >= 0 && lt.compareTo(end) <= 0;
     }
 
+    //Todo обработка ошибок
+    public static LocalDate stringToLocalDate(String date){
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+       // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
+
+        //String date = "16/08/2016";
+
+        //convert String to LocalDate
+        return LocalDate.parse(date/*, formatter*/);
+    }
+    public static LocalTime stringToLocalTime(String time){return LocalTime.parse(time/*, formatter*/);}
+
     public static String toString(LocalDateTime ldt) {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }
@@ -46,6 +58,9 @@ public class DateTimeUtil {
                 LocalTime.of(1, 40,15),
                 LocalTime.of(3, 1,1)
         );
+        System.out.println(stringToLocalDate("1234-02-05"));
+        System.out.println(stringToLocalTime("10:02"));
+
     }
 
 

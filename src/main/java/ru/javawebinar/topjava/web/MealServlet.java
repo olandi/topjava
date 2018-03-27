@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
@@ -18,7 +19,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -26,10 +30,10 @@ public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     //private MealRepository repository;
-
+    private ConfigurableApplicationContext appCtx;
     private MealRestController repository;
     {
-        ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
         repository = appCtx.getBean(MealRestController.class);
     }
 
@@ -37,6 +41,12 @@ public class MealServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
        // repository = new InMemoryMealRepositoryImpl();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        appCtx.close();
     }
 
     @Override
@@ -51,7 +61,8 @@ public class MealServlet extends HttpServlet {
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         repository.update(meal, AuthorizedUser.id());
-        response.sendRedirect("meals");
+
+        response.sendRedirect("meals"+"?"+request.getParameter("filter"));
     }
 
     @Override
@@ -59,14 +70,25 @@ public class MealServlet extends HttpServlet {
         String userId = request.getParameter("user");
         if (userId!=null) {AuthorizedUser.setId(Integer.parseInt(userId));  response.sendRedirect("meals"); return; }
 
-        String action = request.getParameter("action");
+        String sDate = request.getParameter("sDate");
+        String eDate = request.getParameter("eDate");
+        String sTime = request.getParameter("sTime");
+        String eTime = request.getParameter("eTime");
 
+        String startDate = sDate!=null? sDate : "";
+        String endDate = eDate!=null? eDate : "";
+        String startTime = sTime!=null? sTime : "";
+        String endTime = eTime!=null? eTime : "";
+
+        String filter = "sDate="+startDate+"&eDate="+endDate+"&sTime="+startTime+"&eTime="+endTime;
+
+        String action = request.getParameter("action");
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
                 repository.delete(id, AuthorizedUser.id());
-                response.sendRedirect("meals");
+                response.sendRedirect("meals"+"?"+filter);
                 break;
             case "create":
             case "update":
@@ -74,13 +96,23 @@ public class MealServlet extends HttpServlet {
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
                         repository.get(getId(request), AuthorizedUser.id());
                 request.setAttribute("meal", meal);
+                request.setAttribute("filter",filter);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
+
                 request.setAttribute("meals",
-                        /*MealsUtil.getWithExceeded(*/repository.getAll(AuthorizedUser.id()/*), MealsUtil.DEFAULT_CALORIES_PER_DAY*/));
+                        repository.getFiltered(
+                                startDate.equals("")? LocalDate.MIN : DateTimeUtil.stringToLocalDate(startDate),
+                                endDate.equals("")? LocalDate.MAX : DateTimeUtil.stringToLocalDate(endDate),
+                                startTime.equals("")? LocalTime.MIN : DateTimeUtil.stringToLocalTime(startTime),
+                                endTime.equals("")? LocalTime.MAX : DateTimeUtil.stringToLocalTime(endTime)
+                        )
+                );
+
+                request.setAttribute("filter",filter);
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }

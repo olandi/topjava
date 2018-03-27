@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -15,6 +16,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Controller
 public class MealRestController {
@@ -54,15 +56,20 @@ public class MealRestController {
     }
 
 
-    public Collection<MealWithExceed> getAll(Integer userId) {
+    public Collection<MealWithExceed> getAll() {
         log.info("getAll");
-        return MealsUtil.getWithExceeded(service.getAll(userId), AuthorizedUser.getCaloriesPerDay());
+        return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay());
     }
 
-    public Collection<MealWithExceed> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer userId){
+    public Collection<MealWithExceed> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime){
         log.info("getFiltered");
-        return MealsUtil.getWithExceeded(
+       /* return MealsUtil.getWithExceeded(
                 service.getFiltered(startDate, endDate, startTime, endTime, userId),
-                AuthorizedUser.getCaloriesPerDay());
+                AuthorizedUser.getCaloriesPerDay());*/
+       return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id()),AuthorizedUser.getCaloriesPerDay())
+               .stream()
+               .filter(u -> DateTimeUtil.isBetweenDateTime(u.getDateTime().toLocalDate(),startDate,endDate))
+               .filter(u -> DateTimeUtil.isBetweenDateTime(u.getDateTime().toLocalTime(),startTime,endTime))
+               .collect(Collectors.toList());
     }
 }

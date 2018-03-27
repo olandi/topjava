@@ -35,7 +35,15 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     1 1 1 2 2 2 3 3 3 3 4  4  4
      */
+    {
+        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 10, 10, 0), "Завтрак", 999),2);
+        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 10, 13, 0), "Обед", 499),2);
+        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 15, 20, 0), "Ужин", 519),2);
+        save(new Meal(LocalDateTime.of(2015, Month.AUGUST, 5, 10, 0), "Завтрак", 899),2);
+        save(new Meal(LocalDateTime.of(2015, Month.AUGUST, 1, 13, 0), "Обед", 522),2);
+        save(new Meal(LocalDateTime.of(2015, Month.AUGUST, 28, 20, 0), "Ужин", 501),2);
 
+    }
 
     private static final List<Meal> Meal_LIST = Arrays.asList(
             new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
@@ -91,13 +99,13 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getAll(Integer userId) {/*
+    public Collection<Meal> getAll(Integer userId) {
         return repository.values().stream().filter(m -> m.getUserId()==userId)
                 .sorted(Comparator.comparing(Meal::getDate))
-                .collect(Collectors.toList());*/
-        return getFiltered(LocalDate.MIN,LocalDate.MAX,LocalTime.MIN,LocalTime.MAX,userId);
+                .collect(Collectors.toList());
+       // return getFiltered(LocalDate.MIN,LocalDate.MAX,LocalTime.MIN,LocalTime.MAX,userId);
     }
-
+/*
     public Collection<Meal> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer userId){
         return repository.values().stream()
                 .filter(m -> m.getUserId()==userId)
@@ -106,7 +114,7 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
                 .sorted(Comparator.comparing(Meal::getDate))
                 .collect(Collectors.toList());
 
-    }
+    }*/
 
 
 

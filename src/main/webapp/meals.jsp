@@ -20,8 +20,49 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <h2>Meals</h2>
-    <a href="meals?action=create">Add Meal</a>
+    <a href="meals?action=create&${requestScope.filter}">Add Meal</a>
     <hr/>
+
+   <form method="get" action="meals">
+       <table border="1">
+           <tr>
+               <td>
+                  From date
+               </td>
+               <td>
+                   <input type="date" name="sDate" value="${param.sDate}">
+               </td>
+               <td>
+               To date
+               </td>
+               <td>
+                   <input type="date" name="eDate"  value="${param.eDate}">
+               </td>
+           </tr>
+
+
+           <tr>
+               <td>
+                   From time
+               </td>
+               <td>
+                   <input type="time" name="sTime"  value="${param.sTime}">
+               </td>
+               <td>
+               To time
+               </td>
+               <td>
+                   <input type="time" name="eTime" value="${param.eTime}">
+               </td>
+           </tr>
+           <tr>
+               <td colspan="4"> <input type="submit" value="Ok"></td>
+           </tr>
+       </table>
+
+
+
+
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
@@ -43,8 +84,8 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
-                <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
+                <td><a href="meals?action=update&id=${meal.id}&${requestScope.filter}">Update</a></td>
+                <td><a href="meals?action=delete&id=${meal.id}&${requestScope.filter}">Delete</a></td>
             </tr>
         </c:forEach>
     </table>

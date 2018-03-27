@@ -48,7 +48,7 @@ public class MealServiceImpl implements MealService {
         return repository.getAll(userId);
     }
 
-    public Collection<Meal> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer userId){
+    /*public Collection<Meal> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer userId){
         return repository.getFiltered(startDate, endDate, startTime, endTime, userId);
-    }
+    }*/
 }

@@ -20,6 +20,6 @@ public interface MealService {
 
     Collection<Meal> getAll(Integer userId);
 
-    Collection<Meal> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer userId);
+   // Collection<Meal> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer userId);
 
 }
