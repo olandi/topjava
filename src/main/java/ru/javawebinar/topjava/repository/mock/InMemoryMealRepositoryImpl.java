@@ -73,21 +73,12 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         }
         // treat case: update, but absent in storage
 
-
-        return  //meal.getUserId()==userId?
-                repository.computeIfPresent(meal.getId(), (id, oldMeal) -> {
-                    meal.setUserId(userId);
-                    return meal;
-                })//TODO
-             //   :
-               // null
-                ;
+        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> {meal.setUserId(userId); return meal;});
     }
 
     @Override
     public Meal delete(int id, Integer userId) {
         Meal meal = get(id,userId);
-      //  if (meal != null) ;
         return meal != null? repository.remove(meal.getId()) : null;
     }
 
@@ -101,7 +92,7 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     @Override
     public Collection<Meal> getAll(Integer userId) {
         return repository.values().stream().filter(m -> m.getUserId()==userId)
-                .sorted(Comparator.comparing(Meal::getDate))
+                .sorted(Comparator.comparing(Meal::getDate).reversed())
                 .collect(Collectors.toList());
        // return getFiltered(LocalDate.MIN,LocalDate.MAX,LocalTime.MIN,LocalTime.MAX,userId);
     }
@@ -188,11 +179,11 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
         System.out.println("update  meal by authorised user\n"+
                 mealRepository.save(
-                        new Meal(5,LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "aaaaa", 500000),
-                        AuthorizedUser.id())
+                        new Meal(1,LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "aaaaa", 500000),
+                        1)
         );
-        System.out.println(mealRepository.getAll(AuthorizedUser.id()));
-        System.out.println(mealRepository.getAll(0));
+        System.out.println(mealRepository.getAll(1));
+       // System.out.println(mealRepository.getAll(0));
 
 
 /*

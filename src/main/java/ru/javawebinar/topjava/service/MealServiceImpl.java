@@ -11,6 +11,7 @@ import java.time.LocalTime;
 import java.util.Collection;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 
 @Service
@@ -30,17 +31,20 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal update(Meal meal, Integer userId) throws NotFoundException {
-        return checkNotFound(repository.save(meal, userId), "with mealId=" + meal.getId() + " for user id=" + userId);
+       // return checkNotFound(repository.save(meal, userId), "with mealId=" + meal.getId() + " for user id=" + userId);
+        return checkNotFoundWithId(repository.save(meal, userId),meal.getId());
     }
 
     @Override
     public Meal delete(int id, Integer userId) throws NotFoundException {
-        return checkNotFound(repository.delete(id, userId), "with mealId=" + id + " for user id=" + userId);
+       // return checkNotFound(repository.delete(id, userId), "with mealId=" + id + " for user id=" + userId);
+        return checkNotFoundWithId(repository.delete(id, userId),id);
     }
 
     @Override
     public Meal get(int id, Integer userId) throws NotFoundException {
-        return checkNotFound(repository.get(id, userId), "with mealId=" + id + " for user id=" + userId);
+      //  return checkNotFound(repository.get(id, userId), "with mealId=" + id + " for user id=" + userId);
+        return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     @Override

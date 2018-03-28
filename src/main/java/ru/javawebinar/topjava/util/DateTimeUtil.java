@@ -29,17 +29,12 @@ public class DateTimeUtil {
         return lt.compareTo(start) >= 0 && lt.compareTo(end) <= 0;
     }
 
-    //Todo обработка ошибок
     public static LocalDate stringToLocalDate(String date){
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-       // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
-
-        //String date = "16/08/2016";
-
-        //convert String to LocalDate
-        return LocalDate.parse(date/*, formatter*/);
+        return LocalDate.parse(date);
     }
-    public static LocalTime stringToLocalTime(String time){return LocalTime.parse(time/*, formatter*/);}
+    public static LocalTime stringToLocalTime(String time){
+        return LocalTime.parse(time);
+    }
 
     public static String toString(LocalDateTime ldt) {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);

@@ -25,12 +25,12 @@ public class SpringMain {
 
             System.out.println("\n\n\n"+mealRestController.getAll());
             System.out.println(mealRestController.create(
-                    new Meal(LocalDateTime.of(2015, Month.AUGUST, 28, 20, 0), "Ужин", 555),2
+                    new Meal(LocalDateTime.of(2015, Month.AUGUST, 28, 20, 0), "Ужин", 555)
             ));
             System.out.println("\n\n\n"+mealRestController.getAll());
 
             System.out.println(mealRestController.update(
-                    new Meal(13,LocalDateTime.of(2015, Month.AUGUST, 28, 20, 0), "Ужин", 333),2
+                    new Meal(13,LocalDateTime.of(2015, Month.AUGUST, 28, 20, 0), "Ужин", 333),13
             ));
 
             System.out.println("\n\n\n"+mealRestController.getAll());
