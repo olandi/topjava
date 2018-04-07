@@ -5,25 +5,28 @@ import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 
+/**
+ * Do not manipulate new (transient) entries in HashSet/HashMap without overriding hashCode
+ * http://stackoverflow.com/questions/5031614
+ */
 @MappedSuperclass
 
 // http://stackoverflow.com/questions/594597/hibernate-annotations-which-is-better-field-or-property-access
 @Access(AccessType.FIELD)
-public abstract class AbstractBaseEntity implements Persistable<Integer> {
+public class BaseEntity implements Persistable<Integer> {
     public static final int START_SEQ = 100000;
 
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    // PROPERTY access for id due to bug: https://hibernate.atlassian.net/browse/HHH-3718
+    @Access(value = AccessType.PROPERTY)
+    private Integer id;
 
-//  See https://hibernate.atlassian.net/browse/HHH-3718 and https://hibernate.atlassian.net/browse/HHH-12034
-//  Proxy initialization when accessing its identifier managed now by JPA_PROXY_COMPLIANCE setting
-    protected Integer id;
-
-    protected AbstractBaseEntity() {
+    protected BaseEntity() {
     }
 
-    protected AbstractBaseEntity(Integer id) {
+    protected BaseEntity(Integer id) {
         this.id = id;
     }
 
@@ -38,14 +41,8 @@ public abstract class AbstractBaseEntity implements Persistable<Integer> {
 
     @Override
     public boolean isNew() {
-        return this.id == null;
+        return (getId() == null);
     }
-
-    @Override
-    public String toString() {
-        return String.format("Entity %s (%s)", getClass().getName(), id);
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -55,12 +52,17 @@ public abstract class AbstractBaseEntity implements Persistable<Integer> {
         if (o == null || !getClass().equals(Hibernate.getClass(o))) {
             return false;
         }
-        AbstractBaseEntity that = (AbstractBaseEntity) o;
-        return id != null && id.equals(that.id);
+        BaseEntity that = (BaseEntity) o;
+        return getId() != null && getId().equals(that.getId());
     }
 
     @Override
     public int hashCode() {
-        return id == null ? 0 : id;
+        return (getId() == null) ? 0 : getId();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Entity %s (%s)", getClass().getName(), getId());
     }
 }

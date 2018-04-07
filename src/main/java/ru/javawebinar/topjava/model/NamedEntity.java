@@ -1,23 +1,22 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 
 @MappedSuperclass
-public abstract class AbstractNamedEntity extends AbstractBaseEntity {
+public class NamedEntity extends BaseEntity {
 
     @NotBlank
-    @Size(min = 2, max = 100)
     @Column(name = "name", nullable = false)
     protected String name;
 
-    public AbstractNamedEntity() {
+    public NamedEntity() {
     }
 
-    protected AbstractNamedEntity(Integer id, String name) {
+    protected NamedEntity(Integer id, String name) {
         super(id);
         this.name = name;
     }
@@ -32,6 +31,6 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity {
 
     @Override
     public String toString() {
-        return String.format("Entity %s (%s, '%s')", getClass().getName(), id, name);
+        return String.format("Entity %s (%s, '%s')", getClass().getName(), getId(), name);
     }
 }

@@ -5,6 +5,10 @@ import ru.javawebinar.topjava.model.Meal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * GKislin
+ * 06.03.2015.
+ */
 public interface MealRepository {
     // null if updated meal do not belong to userId
     Meal save(Meal meal, int userId);
@@ -15,9 +19,9 @@ public interface MealRepository {
     // null if meal do not belong to userId
     Meal get(int id, int userId);
 
-    // ORDERED dateTime desc
+    // ORDERED dateTime
     List<Meal> getAll(int userId);
 
-    // ORDERED dateTime desc
+    // ORDERED dateTime
     List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
 }

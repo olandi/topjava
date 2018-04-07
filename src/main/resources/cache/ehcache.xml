@@ -1,25 +1,28 @@
-<config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-        xmlns='http://www.ehcache.org/v3'
-        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="false">
 
-    <!--http://www.ehcache.org/documentation/3.4/xml.html-->
-    <!--http://www.ehcache.org/documentation/3.1/107.html#supplement-jsr-107-configurations-->
+    <diskStore path="java.io.tmpdir"/>
 
-    <!--<persistence directory="${user.home}/cache-data"/>-->
+    <!-- objects are evicted from the cache every 60 seconds -->
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="60"
+            timeToLiveSeconds="60"
+            overflowToDisk="true"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"/>
 
-    <cache-template name="expiryCache">
-        <expiry>
-            <ttl unit="minutes">5</ttl>
-        </expiry>
-        <heap unit="entries">5000</heap>
-    </cache-template>
+    <cache name="users"
+           timeToLiveSeconds="60"
+           maxElementsInMemory="1000"
+           eternal="false"
+           overflowToDisk="false"
+           maxElementsOnDisk="10000000"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="1"
+           memoryStoreEvictionPolicy="LRU"/>
 
-    <cache-template name="singleNonExpiryCache">
-        <expiry>
-            <none/>
-        </expiry>
-        <heap>1</heap>
-    </cache-template>
-
-    <cache alias="users" uses-template="singleNonExpiryCache"/>
-</config>
+</ehcache>

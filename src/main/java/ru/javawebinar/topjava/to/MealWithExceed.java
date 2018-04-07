@@ -2,6 +2,10 @@ package ru.javawebinar.topjava.to;
 
 import java.time.LocalDateTime;
 
+/**
+ * GKislin
+ * 11.01.2015.
+ */
 public class MealWithExceed {
     private final Integer id;
 
