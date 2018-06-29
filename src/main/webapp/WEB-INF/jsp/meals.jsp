@@ -13,7 +13,7 @@
     <div class="container">
     <h3><spring:message code="meal.title"/></h3>
 
-    <form method="post" action="meals/filter">
+    <form method="post"<%-- action="ajax/admin/meals/filter"--%> id="filterForm">
         <dl>
             <dt><spring:message code="meal.startDate"/>:</dt>
             <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
@@ -30,8 +30,19 @@
             <dt><spring:message code="meal.endTime"/>:</dt>
             <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
         </dl>
-        <button type="submit"><spring:message code="meal.filter"/></button>
+
+
+
     </form>
+        <button class="btn btn-primary" onclick="mealsFilter()">
+            <span class="fa fa-filter"></span>
+        </button>
+        <button class="btn btn-primary" onclick="resetFilter()">
+            <span class="fa fa-close"></span>
+
+            <%-- <button type="submit"><spring:message code="meal.filter"/></button>--%>
+        </button>
+
     <hr>
 
     <%--<a href="meals/create"><spring:message code="meal.add"/></a>--%>
@@ -65,11 +76,11 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-               <%-- <td><a href="meals/update?id=${meal.id}"><spring:message code="common.update"/></a></td>
+<%--                <td><a href="meals/update?id=${meal.id}"><spring:message code="common.update"/></a></td>
                 <td><a href="meals/delete?id=${meal.id}"><spring:message code="common.delete"/></a></td>--%>
 
                 <td><a><span class="fa fa-pencil"></span></a></td>
-                <td><span class="fa fa-remove" onclick="deleteRow(${meal.id})"></span></td>
+                <td ><a class="delete" id="${meal.id}"><span class="fa fa-remove"<%--onclick="deleteRow(${meal.id})"--%>></span></a></td>
 
                <%-- onclick="add()"--%>
             </tr>

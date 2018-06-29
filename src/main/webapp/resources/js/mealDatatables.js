@@ -8,7 +8,7 @@ $(function () {
         "info": true,
         "columns": [
             {
-                "data": "date"
+                "data": "dateTime"
             },
             {
                 "data": "description"
@@ -33,4 +33,24 @@ $(function () {
         ]
     });
     makeEditable();
+
 });
+
+function mealsFilter() {
+    var form = $("#filterForm");
+        $.ajax({
+            type: "POST",
+            url: ajaxUrl+ "filter",
+            data: form.serialize(),
+             success: function (data) {
+                     datatableApi.clear().rows.add(data).draw();
+             }
+        });
+
+    }
+
+    function resetFilter() {
+        document.getElementById('filterForm').reset();
+        mealsFilter();
+    }
+
