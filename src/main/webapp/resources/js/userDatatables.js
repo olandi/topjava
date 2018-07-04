@@ -40,3 +40,16 @@ $(function () {
     });
     makeEditable();
 });
+
+function enableUser(id) {
+
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl+"enable",
+        data: {id:id},
+        success: function () {
+          updateTable();
+            successNoty("action");
+        }
+    });
+}

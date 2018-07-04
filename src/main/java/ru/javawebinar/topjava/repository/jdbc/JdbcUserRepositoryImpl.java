@@ -94,6 +94,11 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         return users;
     }
 
+
+    public User setEnable(Integer id/*, boolean setEnable*/) {
+        return null;
+    }
+
     private void insertRoles(User u) {
         Set<Role> roles = u.getRoles();
         if (!CollectionUtils.isEmpty(roles)) {

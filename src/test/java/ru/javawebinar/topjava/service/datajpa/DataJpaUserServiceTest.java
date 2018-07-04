@@ -23,4 +23,20 @@ public class DataJpaUserServiceTest extends AbstractJpaUserServiceTest {
     public void testGetWithMealsNotFound() throws Exception {
         service.getWithMeals(1);
     }
+
+    @Test
+    public void testSetEnable() throws Exception{
+        User user = service.get(USER.getId());
+        System.out.println(user);
+
+        service.setEnable(user.getId());
+        user = service.get(USER.getId());
+        System.out.println(user);
+
+        service.setEnable(user.getId());
+        user = service.get(USER.getId());
+        System.out.println(user);
+
+    }
+
 }

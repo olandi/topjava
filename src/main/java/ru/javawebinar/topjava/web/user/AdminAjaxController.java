@@ -17,6 +17,12 @@ public class AdminAjaxController extends AbstractUserController {
         return super.getAll();
     }
 
+    /*@GetMapping(value = "/enable/{id}")
+    public String setEnable(@PathVariable("id") int id) {
+        super.setEnable(id);
+        return "redirect: /ajax/admin/users";
+    }*/
+//http://localhost:8080/topjava/ajax/admin/users/enable/100000
     @Override
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") int id) {
@@ -34,4 +40,18 @@ public class AdminAjaxController extends AbstractUserController {
             super.create(user);
         }
     }
+
+    /**
+     * @CacheEvict(value = "users", allEntries = true)
+     *
+     * из-за этого была проблема с обновлением данных, доставаемых из бд
+     * */
+    @PostMapping(value = "enable")
+    public void test(@RequestParam("id") Integer id) {
+        super.setEnable(id);
+    }
+
+
+
+
 }

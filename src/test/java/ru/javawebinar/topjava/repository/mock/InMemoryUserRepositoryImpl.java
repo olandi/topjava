@@ -54,6 +54,11 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
                 .collect(Collectors.toList());
     }
 
+    //@Override
+    public User setEnable(Integer id/*, boolean setEnable*/) {
+        return null;
+    }
+
     @Override
     public User getByEmail(String email) {
         return repository.values().stream()

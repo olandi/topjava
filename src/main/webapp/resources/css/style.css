@@ -19,6 +19,10 @@ tr[data-mealExceed="false"] {
     color: green;
 }
 
+tr[data-userEnabled="false"] {
+    color: gray;
+}
+
 tr[data-mealExceed="true"] {
     color: red;
 }
