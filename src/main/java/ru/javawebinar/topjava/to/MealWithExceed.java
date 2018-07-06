@@ -1,18 +1,24 @@
 package ru.javawebinar.topjava.to;
 
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class MealWithExceed extends BaseTo {
+    @NotNull
+    private  LocalDateTime dateTime;
+    @NotBlank
+    @Size(max = 30)
+    private  String description;
 
-    private final LocalDateTime dateTime;
+    @NotNull(message = "value must between 10 and 5000 " )
+    @DecimalMin(value = "10")
+    @DecimalMax(value = "5000")
+    private  int calories;
 
-    private final String description;
+    private  boolean exceed;
 
-    private final int calories;
-
-    private final boolean exceed;
-
+    public MealWithExceed(){}
     public MealWithExceed(Integer id, LocalDateTime dateTime, String description, int calories, boolean exceed) {
         super(id);
         this.dateTime = dateTime;
@@ -35,6 +41,26 @@ public class MealWithExceed extends BaseTo {
 
     public boolean isExceed() {
         return exceed;
+    }
+
+   /* public void setDateTime(String dateTime) {
+        this.dateTime = LocalDateTime.parse(dateTime);
+    }*/
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
+    public void setExceed(boolean exceed) {
+        this.exceed = exceed;
     }
 
     @Override

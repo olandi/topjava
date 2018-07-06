@@ -1,10 +1,15 @@
 package ru.javawebinar.topjava.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+
+import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,6 +58,16 @@ public class MealServiceImpl implements MealService {
         Assert.notNull(meal, "meal must not be null");
         return repository.save(meal, userId);
     }
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    @Override
+    public void update(MealWithExceed mealWithExceed, int userId) {
+
+        Meal meal = get(mealWithExceed.getId(),userId);
+        repository.save(MealsUtil.updateFromTo(meal, mealWithExceed),userId);
+    }
+
 
     @Override
     public Meal getWithUser(int id, int userId) {
